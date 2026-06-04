@@ -48,7 +48,7 @@ struct DisplayAccessApp: App {
           SampleAppsView(displayViewModel: displayViewModel)
         }
         .tabItem {
-          Label("Samples", systemImage: "eyeglasses")
+          Label("Flight Tracker", systemImage: "airplane")
         }
         .tag(AppTab.samples)
 

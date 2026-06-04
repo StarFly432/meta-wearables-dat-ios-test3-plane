@@ -3,10 +3,12 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 70;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
+		354A93C62FD0CC1700C04325 /* CarMaintenanceDisplayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354A93C52FD0CC1700C04325 /* CarMaintenanceDisplayViewModel.swift */; };
+		354A93C82FD0CD0900C04325 /* DisplayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354A93C72FD0CD0900C04325 /* DisplayView.swift */; };
 		DB01000000000001 /* DisplayAccessApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB02000000000002 /* DisplayAccessApp.swift */; };
 		DB01000000000002 /* CarMaintenanceDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB02000000000003 /* CarMaintenanceDisplay.swift */; };
 		DB01000000000003 /* DisplayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DB02000000000004 /* DisplayViewModel.swift */; };
@@ -33,6 +35,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		354A93C52FD0CC1700C04325 /* CarMaintenanceDisplayViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarMaintenanceDisplayViewModel.swift; sourceTree = "<group>"; };
+		354A93C72FD0CD0900C04325 /* DisplayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayView.swift; sourceTree = "<group>"; };
 		DB02000000000001 /* DisplayAccess.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DisplayAccess.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DB02000000000002 /* DisplayAccessApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayAccessApp.swift; sourceTree = "<group>"; };
 		DB02000000000003 /* CarMaintenanceDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarMaintenanceDisplay.swift; sourceTree = "<group>"; };
@@ -102,6 +106,8 @@
 			children = (
 				DB02000000000004 /* DisplayViewModel.swift */,
 				DB02000000000005 /* WearablesViewModel.swift */,
+				354A93C52FD0CC1700C04325 /* CarMaintenanceDisplayViewModel.swift */,
+				354A93C72FD0CD0900C04325 /* DisplayView.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -192,8 +198,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				354A93C82FD0CD0900C04325 /* DisplayView.swift in Sources */,
 				DB01000000000001 /* DisplayAccessApp.swift in Sources */,
 				DB01000000000002 /* CarMaintenanceDisplay.swift in Sources */,
+				354A93C62FD0CC1700C04325 /* CarMaintenanceDisplayViewModel.swift in Sources */,
 				DB01000000000003 /* DisplayViewModel.swift in Sources */,
 				DB01000000000004 /* WearablesViewModel.swift in Sources */,
 				DB01000000000005 /* RegistrationView.swift in Sources */,
@@ -212,25 +220,23 @@
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = DisplayAccess/DisplayAccess.entitlements;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "";
-				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = V9WTTPBFK9;
+				DEVELOPMENT_TEAM = 7K897Z2K22;
 				ENABLE_PREVIEWS = YES;
 				FRAMEWORK_SEARCH_PATHS = "";
 				INFOPLIST_FILE = DisplayAccess/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.meta.wearables.external.DisplaySample;
+				PRODUCT_BUNDLE_IDENTIFIER = com.meta.wearables.external.DisplaySampleArtisan3;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Facebook Generic";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -243,24 +249,22 @@
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = DisplayAccess/DisplayAccess.entitlements;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "";
-				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = V9WTTPBFK9;
+				DEVELOPMENT_TEAM = 7K897Z2K22;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = DisplayAccess/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.meta.wearables.external.DisplaySample;
+				PRODUCT_BUNDLE_IDENTIFIER = com.meta.wearables.external.DisplaySampleArtisan;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Facebook Generic";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

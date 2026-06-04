@@ -25,26 +25,26 @@ enum SampleAppItem: String, CaseIterable, Identifiable {
 
   var title: String {
     switch self {
-    case .carMaintenance: "Car maintenance guide"
+    case .carMaintenance: "Flight Tracker"
     }
   }
 
   var description: String {
     switch self {
     case .carMaintenance:
-      "A sample of a display experience where you follow a step by step guide to complete car maintenance task."
+      "Track your flight with a summary and detailed information."
     }
   }
 
   var iconName: String {
     switch self {
-    case .carMaintenance: "car.fill"
+    case .carMaintenance: "airplane"
     }
   }
 
   var iconBackground: Color {
     switch self {
-    case .carMaintenance: Color(red: 0.32, green: 0.10, blue: 0.10)
+    case .carMaintenance: Color(red: 0.10, green: 0.20, blue: 0.45)
     }
   }
 }
@@ -74,6 +74,9 @@ struct SampleAppsView: View {
         .font(.subheadline)
         .foregroundStyle(.secondary)
         .multilineTextAlignment(.center)
+
+      // Preview of the Flight home widget (tappable)
+      FlightHomeWidgetPreview { Task { await displayViewModel.sendFlightSummary() } }
 
       Spacer()
 
@@ -105,7 +108,32 @@ struct SampleAppsView: View {
   private func sendSample(_ item: SampleAppItem) async {
     switch item {
     case .carMaintenance:
-      await displayViewModel.sendCarMaintenanceTutorialList()
+      await displayViewModel.sendFlightSummary()
     }
   }
 }
+
+private struct FlightHomeWidgetPreview: View {
+  var onTap: () -> Void
+  var body: some View {
+    Button(action: onTap) {
+      HStack(spacing: 12) {
+        Image(systemName: "airplane")
+          .font(.headline)
+          .foregroundStyle(.white)
+          .frame(width: 48, height: 48)
+          .background(Color.blue, in: RoundedRectangle(cornerRadius: 10))
+        VStack(alignment: .leading, spacing: 2) {
+          Text("Flight 1056").font(.body)
+          Text("LGA → LAX").font(.caption).foregroundStyle(.secondary)
+        }
+        Spacer()
+        Image(systemName: "chevron.right").foregroundStyle(.secondary)
+      }
+      .padding(12)
+      .background(Color(.secondarySystemBackground), in: RoundedRectangle(cornerRadius: 14))
+    }
+    .buttonStyle(.plain)
+  }
+}
+

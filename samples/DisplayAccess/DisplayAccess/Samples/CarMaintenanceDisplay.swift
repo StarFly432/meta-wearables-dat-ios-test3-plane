@@ -7,218 +7,174 @@
  */
 
 //
-// CarMaintenanceDisplay.swift
+// FlightDisplay.swift
 //
-// Display views for the Car Maintenance sample — step-by-step vehicle tutorials.
-// Sends 3 screen types to the glasses: tutorial list, tutorial detail, and tutorial steps.
+// Display views for Airline travel — summary and detailed flight information for phone/home and glasses.
 //
 
 import MWDATDisplay
+import Foundation
 
-struct CarMaintenanceTutorial {
-  let title: String
-  let duration: String
-  let imageUri: String?
-  let iconImageUri: String?
-  let steps: [CarMaintenanceTutorialStep]
+struct FlightSegment {
+  let origin: String
+  let destination: String
+  let flightNumber: String
+}
 
-  init(
-    title: String,
-    duration: String,
-    imageUri: String? = nil,
-    iconImageUri: String? = nil,
-    steps: [CarMaintenanceTutorialStep]
-  ) {
-    self.title = title
-    self.duration = duration
-    self.imageUri = imageUri
-    self.iconImageUri = iconImageUri
-    self.steps = steps
+struct FlightInfo {
+  let eTicketNumber: String
+  let departureDateText: String
+  let confirmationCode: String
+  let airline: String
+  let operatedBy: String
+  let primaryFlightNumber: String
+  let gate: String
+  let origin: String
+  let destination: String
+  let segments: [FlightSegment]
+  let boardingDate: Date
+  let baggageClaim: String?
+  let airplaneImageUri: String?
+  let airplaneIconUri: String?
+}
+
+private func countdownString(to date: Date) -> String {
+  let now = Date()
+  let remaining = max(0, Int(date.timeIntervalSince(now)))
+  let hours = remaining / 3600
+  let minutes = (remaining % 3600) / 60
+  if hours > 0 {
+    return "Boards in \(hours)h \(minutes)m"
+  } else {
+    return "Boards in \(minutes)m"
   }
 }
 
-struct CarMaintenanceTutorialStep {
-  let description: String
-}
+enum FlightDisplay {
+  static let sampleFlight: FlightInfo = {
+    // Assume example local time today at 12:56pm takeoff and boarding 30 minutes before
+    let calendar = Calendar.current
+    var comps = calendar.dateComponents([.year, .month, .day], from: Date())
+    comps.hour = 12
+    comps.minute = 26 // 12:26pm boarding for 12:56pm takeoff
+    let boarding = calendar.date(from: comps) ?? Date().addingTimeInterval(60*30)
 
-private let tutorialVideoUrl =
-  "https://github.com/facebook/meta-wearables-dat-android/raw/refs/heads/assets/video_266x150_faststart.mp4"
+    return FlightInfo(
+      eTicketNumber: "0017430684429",
+      departureDateText: "Monday, June 15",
+      confirmationCode: "NHKSCF",
+      airline: "American Airlines",
+      operatedBy: "American Airlines",
+      primaryFlightNumber: "1056",
+      gate: "B3",
+      origin: "LGA",
+      destination: "LAX",
+      segments: [
+        FlightSegment(origin: "LGA", destination: "DFW", flightNumber: "1056"),
+        FlightSegment(origin: "DFW", destination: "LAX", flightNumber: "2766")
+      ],
+      boardingDate: boarding,
+      baggageClaim: "Baggage Claim Carousel 5 (subject to change)",
+      airplaneImageUri: "https://www.facebook.com/assets/wearables_dat_display/airplane.png",
+      airplaneIconUri: "https://www.facebook.com/assets/wearables_dat_display/airplane_square.png"
+    )
+  }()
 
-enum CarMaintenanceDisplay {
-  static let tutorials: [CarMaintenanceTutorial] = [
-    CarMaintenanceTutorial(
-      title: "Oil change",
-      duration: "Easy • 45 min",
-      imageUri: "https://www.facebook.com/assets/wearables_dat_display/oil.png",
-      iconImageUri: "https://www.facebook.com/assets/wearables_dat_display/oil_square.png",
-      steps: [
-        CarMaintenanceTutorialStep(
-          description: "Park on level ground and let the engine cool before opening the hood."
-        ),
-        CarMaintenanceTutorialStep(
-          description: "Drain the old oil, replace the filter, and tighten the drain plug."
-        ),
-        CarMaintenanceTutorialStep(
-          description: "Refill with fresh oil, run the engine briefly, and recheck the level."
-        ),
-      ]
-    ),
-    CarMaintenanceTutorial(
-      title: "Fix a flat tire",
-      duration: "Easy • 15 min",
-      imageUri: "https://www.facebook.com/assets/wearables_dat_display/tire.png",
-      iconImageUri: "https://www.facebook.com/assets/wearables_dat_display/tire_square.png",
-      steps: [
-        CarMaintenanceTutorialStep(
-          description: "Park away from traffic, engage the brake, and place the wheel wedges."
-        ),
-        CarMaintenanceTutorialStep(
-          description: "Loosen the lug nuts slightly, raise the car, and remove the flat tire."
-        ),
-        CarMaintenanceTutorialStep(
-          description: "Mount the spare, tighten in a star pattern, and lower the vehicle."
-        ),
-      ]
-    ),
-    CarMaintenanceTutorial(
-      title: "Replace headlight bulb",
-      duration: "Very easy • 5 min",
-      imageUri: "https://www.facebook.com/assets/wearables_dat_display/light.png",
-      iconImageUri: "https://www.facebook.com/assets/wearables_dat_display/light_square.png",
-      steps: [
-        CarMaintenanceTutorialStep(
-          description: "Open the rear access cover and disconnect the bulb connector."
-        ),
-        CarMaintenanceTutorialStep(
-          description: "Release the retaining clip, remove the old bulb, and insert the new one."
-        ),
-        CarMaintenanceTutorialStep(
-          description: "Reconnect power, close the cover, and verify the beam works properly."
-        ),
-      ]
-    ),
-    CarMaintenanceTutorial(
-      title: "Check engine light",
-      duration: "Hard • 2 hours",
-      imageUri: "https://www.facebook.com/assets/wearables_dat_display/engine.png",
-      iconImageUri: "https://www.facebook.com/assets/wearables_dat_display/engine_square.png",
-      steps: [
-        CarMaintenanceTutorialStep(
-          description: "Check whether the light is steady or flashing, and stop driving if it is flashing."
-        ),
-        CarMaintenanceTutorialStep(
-          description: "Tighten the gas cap fully and look for obvious issues like low fluids or overheating."
-        ),
-        CarMaintenanceTutorialStep(
-          description: "Scan for diagnostic codes or schedule service if the light stays on after restarting."
-        ),
-      ]
-    ),
-    CarMaintenanceTutorial(
-      title: "Change washer fluid",
-      duration: "Very easy • 3 min",
-      imageUri: "https://www.facebook.com/assets/wearables_dat_display/washer.png",
-      iconImageUri: "https://www.facebook.com/assets/wearables_dat_display/washer_square.png",
-      steps: [
-        CarMaintenanceTutorialStep(
-          description: "Open the hood and locate the washer fluid reservoir cap with the windshield symbol."
-        ),
-        CarMaintenanceTutorialStep(
-          description: "Pour washer fluid into the reservoir carefully until it reaches the fill line."
-        ),
-        CarMaintenanceTutorialStep(
-          description: "Close the cap securely and test the sprayers to confirm proper flow."
-        ),
-      ]
-    ),
-  ]
-
-  /// Screen 1: List of car maintenance tutorials with difficulty and duration.
-  static func tutorialList(
-    onSelectTutorial: @escaping @Sendable (Int) -> Void
-  ) -> FlexBox {
-    FlexBox(direction: .column, spacing: 10) {
-      for index in tutorials.indices {
-        FlexBox(direction: .row, spacing: 12, crossAlignment: .center) {
-          if let iconImageUri = tutorials[index].iconImageUri {
-            FlexBox(direction: .column) {
-              Image(uri: iconImageUri, sizePreset: .fill, cornerRadius: .medium)
-            }
-            .flexGrow(1)
-          }
-          FlexBox(direction: .column) {
-            Text(tutorials[index].title, style: .body)
-            Text(tutorials[index].duration, style: .meta, color: .secondary)
-          }
-          .flexGrow(7)
+  // Home/phone compact widget
+  static func homeWidget(onTap: @escaping @Sendable () -> Void) -> FlexBox {
+    let f = sampleFlight
+    return FlexBox(direction: .row, spacing: 12, crossAlignment: .center) {
+      if let icon = f.airplaneIconUri {
+        FlexBox(direction: .column) {
+          Image(uri: icon, sizePreset: .fill, cornerRadius: .medium)
         }
-        .padding(24)
-        .onTap { onSelectTutorial(index) }
+        .flexGrow(1)
       }
+      FlexBox(direction: .column, spacing: 2) {
+        Text("Flight \(f.primaryFlightNumber)", style: .body)
+        Text("\(f.origin) → \(f.destination)", style: .meta, color: .secondary)
+      }
+      .flexGrow(7)
     }
+    .padding(16)
+    .background(.card)
+    .onTap(onTap)
   }
 
-  /// Screen 2: Detail card for a selected tutorial with description and action buttons.
-  static func tutorialDetail(
-    tutorialIndex: Int,
-    onBack: @escaping @Sendable () -> Void,
-    onStart: @escaping @Sendable () -> Void
-  ) -> FlexBox {
-    let tutorial = tutorials[tutorialIndex]
-    return FlexBox(direction: .column, spacing: 12) {
-      FlexBox(direction: .column) {
-        if let imageUri = tutorial.imageUri {
-          Image(uri: imageUri, sizePreset: .fill, cornerRadius: .medium)
-        }
-        Text(tutorial.title, style: .heading)
-        Text(tutorial.duration, style: .meta, color: .secondary)
-      }
-      .padding(24)
-      .background(.card)
-
-      FlexBox(direction: .row, spacing: 8, alignment: .center, crossAlignment: .center, wrap: true) {
-        Button(label: "Back", onClick: onBack)
-        Button(label: "Start", onClick: onStart)
-      }
-    }
-  }
-
-  /// A video player for the tutorial demo video.
-  static func tutorialVideo() -> VideoPlayer {
-    VideoPlayer(provider: .uri(tutorialVideoUrl), codec: .mp4)
-  }
-
-  /// Screen 3: Step-by-step view for a tutorial with navigation buttons.
-  static func tutorialStep(
-    tutorialIndex: Int,
-    stepIndex: Int,
-    onPrevious: @escaping @Sendable () -> Void,
-    onNext: @escaping @Sendable () -> Void,
-    onWatchVideo: @escaping @Sendable () -> Void
-  ) -> FlexBox {
-    let tutorial = tutorials[tutorialIndex]
-    let clampedIndex = min(max(stepIndex, 0), tutorial.steps.count - 1)
-    let step = tutorial.steps[clampedIndex]
-    let isLastStep = clampedIndex == tutorial.steps.count - 1
+  // Glasses Screen 1: Summary with Flight No., time until boarding, and Gate
+  static func flightSummary(onShowDetails: @escaping @Sendable () -> Void) -> FlexBox {
+    let f = sampleFlight
+    let countdown = countdownString(to: f.boardingDate)
 
     return FlexBox(direction: .column, spacing: 12) {
-      FlexBox(direction: .column) {
-        Text("Step \(clampedIndex + 1)", style: .meta, color: .secondary)
-        Text(step.description, style: .body)
+      FlexBox(direction: .column, spacing: 8) {
+        if let image = f.airplaneImageUri {
+          Image(uri: image, sizePreset: .fill, cornerRadius: .medium)
+        }
+        Text("Flight \(f.primaryFlightNumber)", style: .heading)
+        Text(countdown, style: .meta, color: .secondary)
+        Text("Gate \(f.gate)", style: .body)
       }
       .padding(24)
       .background(.card)
 
       FlexBox(direction: .row, spacing: 8, alignment: .center, crossAlignment: .center) {
-        Button(label: "Previous", style: .primary, iconName: .triangleLeftVerticalLine, onClick: onPrevious)
-        Button(
-          label: isLastStep ? "Done" : "Next",
-          style: .primary,
-          iconName: isLastStep ? .checkmark : .triangleRightVerticalLine,
-          onClick: onNext
-        )
-        Button(label: "Watch video", style: .secondary, iconName: .videoCamera, onClick: onWatchVideo)
+        Button(label: "More details", onClick: onShowDetails)
+      }
+    }
+  }
+
+  // Glasses Screen 2: Detailed flight information
+  static func flightDetails(onBack: @escaping @Sendable () -> Void) -> FlexBox {
+    let f = sampleFlight
+
+    return FlexBox(direction: .column, spacing: 12) {
+      FlexBox(direction: .column, spacing: 6) {
+        if let image = f.airplaneImageUri {
+          Image(uri: image, sizePreset: .fill, cornerRadius: .medium)
+        }
+        Text("American Airlines", style: .meta, color: .secondary)
+        Text("LGA → DFW → LAX", style: .body)
+      }
+      .padding(24)
+      .background(.card)
+
+      FlexBox(direction: .column, spacing: 8) {
+        Text("E-ticket number", style: .meta, color: .secondary)
+        Text(f.eTicketNumber, style: .body)
+
+        Text("Departure date", style: .meta, color: .secondary)
+        Text(f.departureDateText, style: .body)
+
+        Text("Airline booking confirmation", style: .meta, color: .secondary)
+        Text(f.confirmationCode, style: .body)
+
+        Text("Airline", style: .meta, color: .secondary)
+        Text(f.airline, style: .body)
+
+        Text("Flight No.", style: .meta, color: .secondary)
+        Text(f.primaryFlightNumber, style: .body)
+
+        Text("Operated by", style: .meta, color: .secondary)
+        Text(f.operatedBy, style: .body)
+
+        Text("Routing", style: .meta, color: .secondary)
+        for seg in f.segments {
+          Text("\(seg.origin) → \(seg.destination) • \(seg.flightNumber)", style: .body)
+        }
+
+        if let bag = f.baggageClaim {
+          Text("Baggage claim", style: .meta, color: .secondary)
+          Text(bag, style: .body)
+        }
+      }
+      .padding(24)
+      .background(.card)
+
+      FlexBox(direction: .row, spacing: 8, alignment: .center, crossAlignment: .center) {
+        Button(label: "Back", onClick: onBack)
       }
     }
   }
 }
+
